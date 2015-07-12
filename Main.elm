@@ -1,4 +1,4 @@
-module Squarer where
+module Main where
 
 import Html exposing (..)
 import Html.Attributes exposing (style)
@@ -36,11 +36,11 @@ view address model =
 getStyle : Model -> Attribute
 getStyle model =
   let deg = case model of
-    Up -> "0"
-    Right -> "90"
-    Down -> "180"
-    Left -> "270"
-  in style [("transform", "rotate(" ++ deg ++ "deg)")]
+    Up -> 0
+    Right -> 90
+    Down -> 180
+    Left -> 270
+  in style [("transform", "rotate(" ++ toString deg ++ "deg)")]
 
 main =
   StartApp.start

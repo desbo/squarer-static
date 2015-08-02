@@ -1,5 +1,5 @@
 .rotator {
-  width: 300px;
+  width: 400px;
   height: 200px;
   margin: 0 auto;
   text-align: center;
@@ -11,4 +11,9 @@
 
 .image {
   transition: transform 200ms cubic-bezier(0.57, 0.06, 0.55, 0.95);
+
+  img {
+    width: 300px;
+    height: auto;
+  }
 }

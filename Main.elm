@@ -33,7 +33,7 @@ update action model =
   case action of
     TurnLeft  ->  { model | rotation <- model.rotation - 90 }
     TurnRight ->  { model | rotation <- model.rotation + 90 }
-    Upload s  ->  { model | preview <- s }
+    Upload s  ->  { model | rotation <- 0, preview <- s }
     None      ->    model
 
 

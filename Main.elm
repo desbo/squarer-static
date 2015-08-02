@@ -5,7 +5,6 @@ import Html exposing (..)
 import Html.Attributes exposing (style, class)
 import Html.Events exposing (onClick)
 import String exposing (toLower)
-import StartApp
 
 
 type alias Model = {
@@ -16,7 +15,8 @@ type alias Model = {
 type Action
   = TurnLeft
   | TurnRight
-  | Upload String
+  | Upload (Maybe String)
+  | None
 
 
 port imageUpload : Signal String
@@ -26,33 +26,41 @@ init : Int -> Model
 init x = { rotation = x
          , preview = Preview.init }
 
+initialModel = init 0
 
 update : Action -> Model -> Model
 update action model =
   case action of
     TurnLeft ->  { model | rotation <- model.rotation - 90 }
     TurnRight -> { model | rotation <- model.rotation + 90 }
-    Upload string -> { model | preview <- string }
+    Upload s -> { model | preview <- s }
+    None -> model
 
 
 view : Signal.Address Action -> Model -> Html
 view address model =
-  div []
-  [
-    div [ class "rotator" ]
-      [ button [ onClick address TurnLeft ] [ text "<-" ]
-      , div [ class "image", getStyle model ] [ text "hello" ]
-      , button [ onClick address TurnRight ] [ text "->" ]
-      ]
-  ]
+  let imageStyle =
+    style [("transform", "rotate(" ++ toString model.rotation ++ "deg)")]
+  in
+    div []
+    [
+      div [ class "rotator" ]
+        [ button [ onClick address TurnLeft ] [ text "<-" ]
+        , div [ class "image", imageStyle ] [ Preview.view model.preview ]
+        , button [ onClick address TurnRight ] [ text "->" ]
+        ]
+    ]
 
+main : Signal Html
+main =
+  let
+    actions = Signal.mailbox None
 
-getStyle : Model -> Attribute
-getStyle model =
-  style [("transform", "rotate(" ++ toString model.rotation ++ "deg)")]
+    signals = Signal.merge
+      (actions.signal)
+      (Signal.map (\s -> Upload (Just s)) imageUpload)
 
-main = StartApp.start
-    { model = init 0
-    , update = update
-    , view = view
-    }
+    model = Signal.foldp update initialModel signals
+
+  in
+    Signal.map (view actions.address) model

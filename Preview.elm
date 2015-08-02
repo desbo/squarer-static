@@ -1,12 +1,13 @@
-module Preview (Model, Action, init, update) where
+module Preview (Model, init, view) where
 
 import Html exposing (..)
-import Html.Events exposing (onClick)
+import Html.Attributes exposing (src)
 
-type alias Model = String
-type Action = Upload
+type alias Model = Maybe String
 
-init = "Hello"
+init = Nothing
 
-update : Action -> Model -> Model
-update action model = "tba"
+view : Model -> Html
+view model = case model of
+  Just base64 -> img [ src base64 ] []
+  Nothing -> div [] []

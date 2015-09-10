@@ -58,9 +58,9 @@ view address model =
     div []
     [
       div [ class "rotator" ]
-        [ button [ onClick address TurnLeft ] [ text "<-" ]
+        [ button [ class "btn btn-left", onClick address TurnLeft ] [ ]
         , div [ class "image", imageStyle ] [ image ]
-        , button [ onClick address TurnRight ] [ text "->" ]
+        , button [ class "btn btn-right", onClick address TurnRight ] [ ]
         ]
     ]
 

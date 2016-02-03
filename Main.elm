@@ -36,9 +36,9 @@ initialModel = init 0
 update : Action -> Model -> Model
 update action model =
   case action of
-    TurnLeft  ->  { model | rotation <- model.rotation - 90 }
-    TurnRight ->  { model | rotation <- model.rotation + 90 }
-    Upload i  ->  { model | rotation <- 0, preview <- Just i }
+    TurnLeft  ->  { model | rotation = model.rotation - 90 }
+    TurnRight ->  { model | rotation = model.rotation + 90 }
+    Upload i  ->  { model | rotation = 0, preview = Just i }
     None      ->    model
 
 

@@ -28,3 +28,5 @@ document.getElementById('image').onchange = function readURL(input) {
     reader.readAsDataURL(input.target.files[0]);
   }
 };
+
+main.ports.model2.subscribe(function (model) { console.log(model); });

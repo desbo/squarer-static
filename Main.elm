@@ -63,17 +63,19 @@ view address model =
         , button [ class "btn btn-right", onClick address TurnRight ] [ ]
         ]
     ]
+actions : Signal.Mailbox Action
+actions = Signal.mailbox None
+
+signals : Signal Action
+signals = Signal.merge
+  (actions.signal)
+  (Signal.map Upload imageUpload)
+
+model : Signal Model
+model = Signal.foldp update initialModel signals
+
+port model2 : Signal Model
+port model2 = model
 
 main : Signal Html
-main =
-  let
-    actions = Signal.mailbox None
-
-    signals = Signal.merge
-      (actions.signal)
-      (Signal.map Upload imageUpload)
-
-    model = Signal.foldp update initialModel signals
-
-  in
-    Signal.map (view actions.address) model
+main = Signal.map (view actions.address) model
